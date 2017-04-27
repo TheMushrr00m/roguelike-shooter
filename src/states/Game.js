@@ -1,6 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
-import Player from '../sprites/Mushroom';
+import Player from '../sprites/Player';
 
 function getExits(x, y) {
   return [
@@ -280,6 +280,9 @@ export default class extends Phaser.State {
 
   update() {
     this.physics.arcade.collide(this.player, this.layer);
+    this.game.physics.arcade.collide(this.player.bulletPool, this.layer, (b/* , tile */) => {
+      b.kill();
+    });
   }
 
   render() {
