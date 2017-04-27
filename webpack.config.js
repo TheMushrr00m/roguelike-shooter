@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Phaser webpack config
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
@@ -15,16 +16,15 @@ const definePlugin = new webpack.DefinePlugin({
 module.exports = {
   entry: {
     app: [
-      'babel-polyfill',
       path.resolve(__dirname, 'src/main.js'),
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader'],
   },
-  devtool: 'cheap-source-map',
+  devtool: '#source-map',
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
+    // publicPath: './dist/',
     filename: 'bundle.js',
   },
   watch: true,
@@ -35,8 +35,13 @@ module.exports = {
       host: process.env.IP || 'localhost',
       port: process.env.PORT || 3000,
       server: {
-        baseDir: ['./', './build'],
+        baseDir: ['./dist', './', './build'],
       },
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Custom template',
+      hash: true,
+      template: 'index.ejs', // Load a custom template (ejs by default see the FAQ for details)
     }),
   ],
   module: {
